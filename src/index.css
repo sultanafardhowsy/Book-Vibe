@@ -1,2 +1,43 @@
 @import "tailwindcss";
 @plugin "daisyui";
+
+@theme {
+  --font-sans: "Work Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Playfair Display", ui-serif, Georgia, serif;
+  --color-brand-50: #ecfdf3;
+  --color-brand-100: #d1fadf;
+  --color-brand-200: #a6f4c5;
+  --color-brand-500: #23be0a;
+  --color-brand-600: #1c9a08;
+  --color-brand-700: #157606;
+  --color-ink: #131313;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  @apply font-sans text-ink bg-white antialiased;
+}
+
+.text-gradient {
+  background: linear-gradient(120deg, #23be0a 0%, #0ea5a3 60%, #2563eb 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.bg-grid {
+  background-image:
+    linear-gradient(to right, rgb(19 19 19 / 0.04) 1px, transparent 1px),
+    linear-gradient(to bottom, rgb(19 19 19 / 0.04) 1px, transparent 1px);
+  background-size: 32px 32px;
+}
+
+.line-clamp-3 {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}

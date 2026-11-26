@@ -1,47 +1,36 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext } from 'react';
+import { BookCheck } from 'lucide-react';
 import { Bookcontext } from '../../Context/Bookcontext';
-import BookCards from '../UI/BookCards';
+import ListedBookRow from './ListedBookRow';
+import EmptyList from './EmptyList';
+import { sortBooks } from './sortBooks';
 
 const ListedWishList = ({ sortingType }) => {
-    const { whishlist } = useContext(Bookcontext)
-    console.log(sortingType);
-    
+  const { whishlist, removeFromWishlist, handleMarkAsRead } = useContext(Bookcontext);
 
+  if (whishlist.length === 0) {
+    return <EmptyList title="Your wishlist is empty" text="Save books you want to read next and they will show up here." />;
+  }
 
-    const [filterdWishList, setFilterdWishList] = useState(whishlist)
-
-    useEffect(() => {
-        if (sortingType) {
-            if (sortingType == "pages") {
-                const sortedData = [...whishlist].sort(
-                    (a, b) => a.totalPages - b.totalPages)
-                console.log(sortedData);
-                setFilterdWishList(sortedData);
-            } else if (sortingType == "rating") {
-                const sortedData = [...whishlist].sort(
-                    (a, b) => a.rating - b.rating)
-                console.log(sortedData);
-                setFilterdWishList(sortedData);
-            }
-        }
-    }, [sortingType, whishlist])
-
-    if (filterdWishList.length === 0) {
-        return <div className='h-[50vh] bg-gray-300 flex justify-center items-center'>
-            <h2 className='font-bold text-3xl'>No wish list data found</h2>
-        </div>
-    }
-    return (
-        <div>
-            <div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
-                {
-                    filterdWishList.map((book, ind) => (
-                        <BookCards key={ind} book={book} />
-                    ))
-                }
-            </div>
-        </div>
-    );
+  return (
+    <div className="space-y-5">
+      {sortBooks(whishlist, sortingType).map((book) => (
+        <ListedBookRow
+          key={book.bookId}
+          book={book}
+          onRemove={removeFromWishlist}
+          action={
+            <button
+              onClick={() => handleMarkAsRead(book)}
+              className="inline-flex items-center gap-1.5 rounded-full border border-ink/15 px-4 py-1.5 text-sm font-semibold hover:border-ink"
+            >
+              <BookCheck size={16} /> Mark as read
+            </button>
+          }
+        />
+      ))}
+    </div>
+  );
 };
 
 export default ListedWishList;
